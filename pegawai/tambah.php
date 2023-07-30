@@ -1,5 +1,7 @@
 <?php
-include '../koneksi.php';
+include_once 'aksi.php';
+
+$divisi = tampilDivisi("SELECT * FROM divisi");
 
 if (isset($_POST["submit"])) {
 
@@ -16,11 +18,11 @@ if (isset($_POST["submit"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tambah Data Pegawai</title>
 </head>
 
 <body>
-    <h1>Tambah Pegawai</h1>
+    <h1 align="center">Tambah Data Pegawai</h1>
     <table cellpadding="15">
         <form action="" method="post" enctype="multipart/form-data">
             <tr>
@@ -28,10 +30,18 @@ if (isset($_POST["submit"])) {
                 <td><input type="text" name="nama" id="nama"></td>
             </tr>
             <tr>
-                <td><label for="foto">Foto</label></td>
+                <td><label for="divisi">Divisi</label></td>
                 <td>
-                    <input type="file" id="foto" name="foto">
+                    <select name="divisi" id="divisi" style="width: 178px;">
+                        <?php foreach ($divisi as $row) : ?>
+                            <option name="divisi" id="divisi" value="<?= $row["id"]; ?>"><?= $row["nama_divisi"]; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </td>
+            </tr>
+            <tr>
+                <td><label for="foto">Foto</label></td>
+                <td><input type="file" id="foto" name="foto"></td>
             </tr>
             <tr>
                 <td>

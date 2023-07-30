@@ -1,0 +1,26 @@
+        <?php if ($halaman > 1) : ?>
+            <a href="?halaman=<?= $halaman - 1 ?>">&lt;</a>
+        <?php endif; ?>
+
+        <?php if ($halaman < $jumlahHalaman) : ?>
+            <a href="?halaman=<?= $halaman + 1 ?>">&gt;</a>
+        <?php endif; ?>
+
+
+        <?php if ($jumlahHalaman <= 1) : ?>
+        <?php else : ?>
+            <?php for ($i = 1; $i <= $jumlahHalaman; $i++) : ?>
+                <a href="?halaman=<?= $i; ?>"><?= $i; ?></a>
+            <?php endfor; ?>
+        <?php endif; ?>
+
+$query = "SELECT pegawai.id as 'mainId', pegawai.nama_pegawai, pegawai.foto, pegawai.id_divisi, divisi.id, divisi.nama_divisi,divisi.id_ruangan, ruangan.id, ruangan.nama_ruangan FROM pegawai
+                LEFT JOIN divisi ON pegawai.id_divisi = divisi.id
+                LEFT JOIN ruangan ON divisi.id_ruangan = ruangan.id
+                WHERE 
+                nama_pegawai LIKE '%$pencarian%' OR
+                nama_divisi LIKE '%$pencarian%' OR
+                nama_ruangan LIKE '%$pencarian%'
+                ORDER BY mainId DESC 
+                ;";
+    return tampilPegawai($query);
