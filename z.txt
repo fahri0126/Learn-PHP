@@ -24,3 +24,11 @@ $query = "SELECT pegawai.id as 'mainId', pegawai.nama_pegawai, pegawai.foto, peg
                 ORDER BY mainId DESC 
                 ;";
     return tampilPegawai($query);
+
+
+        <?php if ($jumlahHalaman <= 1) : ?>
+        <?php else : ?>
+            <?php for ($i = 1; $i <= $jumlahHalaman; $i++) : ?>
+                <a href="?pencarian=<?= $pencarian; ?>&halaman=<?= $i; ?>"><?= $i; ?></a>
+            <?php endfor; ?>
+        <?php endif; ?>

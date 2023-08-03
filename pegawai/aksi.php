@@ -3,11 +3,13 @@ include '../koneksi.php';
 include_once '../divisi/aksi.php';
 
 // function READ
-function tampilPegawai($pencarian, $halaman)
+function tampilPegawai($pencarian, $halaman, $idPegawai)
 {
     global $koneksi;
     $search = "";
-    if ($pencarian != NULL) {
+    if ($idPegawai !== NULL) {
+        $search = "WHERE pegawai.id = $idPegawai";
+    } elseif ($pencarian != NULL) {
         $search = "WHERE 
                 nama_pegawai LIKE '%$pencarian%' OR
                 nama_divisi LIKE '%$pencarian%' OR
@@ -17,8 +19,8 @@ function tampilPegawai($pencarian, $halaman)
     $query = "SELECT pegawai.id as 'mainId', pegawai.nama_pegawai, pegawai.foto, pegawai.id_divisi, divisi.id, divisi.nama_divisi,divisi.id_ruangan, ruangan.id, ruangan.nama_ruangan
                         FROM pegawai
                         LEFT JOIN  divisi ON pegawai.id_divisi = divisi.id
-                        LEFT JOIN ruangan ON divisi.id_ruangan = ruangan.id " . $search .
-        "ORDER BY mainId DESC";
+                        LEFT JOIN ruangan ON divisi.id_ruangan = ruangan.id " . $search;
+    // "ORDER BY pegawai.id DESC";
 
     if ($halaman != NULL) {
         $pagination = setPagination($query, $halaman);
@@ -41,9 +43,6 @@ function tampilPegawai($pencarian, $halaman)
 // function PAGINATION
 function setPagination($query, $halaman)
 {
-    global $koneksi;
-    // $jumlahData = count(mysqli_fetch_assoc(mysqli_query($koneksi, $query)));
-    // $jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
     $jumlahDataPerHalaman = 3;
     $halamanAktif = (isset($halaman)) ? $halaman : 1;
     $awalData = ($jumlahDataPerHalaman * $halamanAktif) - $jumlahDataPerHalaman;
@@ -87,7 +86,6 @@ function upload()
     $error = $_FILES["foto"]["error"];
     if ($error === 4) {
         return false;
-        echo "Masukan sebuah gambar";
     }
 
     // $ekstensiFoto = ["jpg", "jpeg", "png"];
